@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "outDir": "dist",
+    "target": "es5",
+    "lib": ["es5", "es6", "es7", "es2017", "dom"],
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "rootDirs": ["src"],
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src/*"],
+  "exclude": ["node_modules"]
+}
