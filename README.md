@@ -18,8 +18,7 @@ import ReactTracker from "react-tracker-teko";
 const reactTracker = new ReactTracker({
   // Configure your tracker server and site by providing
   host: "https://dev-tracking.teko.vn",
-  urlServeJsFile:
-    "https://dev-tracking.teko.vn/track/libs/tracker-v1.0.0.full.min.js",
+  urlServeJsFile: "https://dev-tracking.teko.vn/track/libs/tracker.full.min.js",
   appId: "chat-tool"
 });
 
