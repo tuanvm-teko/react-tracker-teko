@@ -1,3 +1,4 @@
 import * as React from "react";
-export declare const TrackerContext: React.Context<any>;
+import { Instance } from "./TrackerProvider";
+export declare const TrackerContext: React.Context<Instance>;
 export default TrackerContext;

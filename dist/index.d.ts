@@ -20,8 +20,8 @@ export interface UseTrackPageViewT {
 }
 export declare const useAutoPageView: (props?: UseTrackPageViewT) => void;
 export declare const useTrackPageView: () => {
-    callTrackLoadPage: any;
-    callTrackUnLoadPage: any;
+    callTrackLoadPage: (props?: UseTrackPageViewT) => void;
+    callTrackUnLoadPage: (props?: UseTrackPageViewT) => void;
 };
 export * from "./TrackerContext";
 export * from "./TrackerProvider";

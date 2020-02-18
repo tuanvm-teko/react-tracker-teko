@@ -1,17 +1,17 @@
 {
   "name": "react-tracker-teko",
   "version": "2.0.0",
-  "main": "dist/index.js",
+  "main": "dist/index.jsx",
   "types": "dist/index.d.ts",
   "license": "MIT",
   "author": "Tuan VM",
-  "description": "Plugin for matomo",
+  "description": "Plugin for Tracker Teko",
   "keywords": [
     "npm",
     "tracker"
   ],
   "scripts": {
-    "compile": "rm -rf dist && tsc src/* --outDir dist -d --declarationDir dist"
+    "compile": "rm -rf dist && tsc src/* --outDir dist -d --declarationDir dist --jsx preserve"
   },
   "devDependencies": {
     "@types/history": "^4.7.5",
