@@ -14,6 +14,12 @@
     "compile": "rm -rf dist && tsc src/* --outDir dist -d --declarationDir dist"
   },
   "devDependencies": {
+    "@types/history": "^4.7.5",
+    "@types/react": "^16.9.20",
     "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "history": "^4.10.1",
+    "react": "^16.12.0"
   }
 }

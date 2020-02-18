@@ -1,3 +1,7 @@
+import * as React from "react";
+import { useContext, useEffect } from "react";
+import TrackerContext from "./TrackerContext";
+import { Instance } from "./TrackerProvider";
 const defaultOptions = {
   host: "https://dev-tracking.teko.vn",
   urlServeJsFile:
@@ -62,6 +66,22 @@ interface InitContructor {
   urlServeJsFile: string;
 }
 
+export const getProtocal = (loc: any) => {
+  // Protocol may or may not contain a colon
+  let protocol = loc.protocol;
+  if (protocol.slice(-1) !== ":") {
+    protocol += ":";
+  }
+
+  return protocol;
+};
+
+export const getPath = (loc: any) => {
+  const _loc = window.location;
+  const protocol = getProtocal(_loc);
+  return protocol + "//" + _loc.host + loc.pathname;
+};
+
 class ReactTracker {
   private previousPath: any;
   private unlistenFromHistory: any;
@@ -76,7 +96,7 @@ class ReactTracker {
     }
 
     (window as any).track("enableUnloadPageView");
-    this.initProtocal();
+    this.setProtocal();
   }
 
   public connectToHistory(history: any) {
@@ -84,7 +104,7 @@ class ReactTracker {
       typeof history.getCurrentLocation === "undefined"
         ? history.location
         : history.getCurrentLocation();
-    this.previousPath = this.getPath(prevLoc);
+    this.previousPath = getPath(prevLoc);
     (window as any).track("setReferrerUrl", this.previousPath);
     (window as any).track("trackLoadPageView");
     this.unlistenFromHistory = history.listen((loc: any) => {
@@ -104,11 +124,11 @@ class ReactTracker {
     return false;
   }
 
-  public track(loc: any) {
+  private track(loc: any) {
     if (typeof window === "undefined") {
       return;
     }
-    const currentPath = this.getPath(loc);
+    const currentPath = getPath(loc);
 
     if (this.previousPath === currentPath) {
       return;
@@ -123,21 +143,37 @@ class ReactTracker {
     this.previousPath = currentPath;
   }
 
-  private initProtocal = () => {
-    const loc = window.location;
-
-    // Protocol may or may not contain a colon
-    let protocol = loc.protocol;
-    if (protocol.slice(-1) !== ":") {
-      protocol += ":";
-    }
-    this.protocol = protocol;
-  };
-
-  private getPath = (loc: any) => {
-    const _loc = window.location;
-    return this.protocol + "//" + _loc.host + loc.pathname;
+  private setProtocal = () => {
+    this.protocol = getProtocal(window.location);
   };
 }
 
+export interface UseTrackPageViewT {
+  pageCode?: string;
+}
+
+export const useAutoPageView = (props?: UseTrackPageViewT) => {
+  const { callTrackLoadPage, callTrackUnLoadPage }: Instance = useContext(
+    TrackerContext
+  );
+  useEffect(() => {
+    callTrackLoadPage(props);
+    return () => {
+      callTrackUnLoadPage(props);
+    };
+  }, []);
+};
+
+export const useTrackPageView = () => {
+  const { callTrackLoadPage, callTrackUnLoadPage }: Instance = useContext(
+    TrackerContext
+  );
+
+  return {
+    callTrackLoadPage,
+    callTrackUnLoadPage
+  };
+};
+export * from "./TrackerContext";
+export * from "./TrackerProvider";
 export default ReactTracker;

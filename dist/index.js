@@ -10,7 +10,12 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
 exports.__esModule = true;
+var react_1 = require("react");
+var TrackerContext_1 = require("./TrackerContext");
 var defaultOptions = {
     host: "https://dev-tracking.teko.vn",
     urlServeJsFile: "https://dev-tracking.teko.vn/track/libs/tracker-v1.0.0.full.min.js"
@@ -47,22 +52,25 @@ var init = function (f, b, e, v, i, r, t, s) {
         return false;
     };
 };
+exports.getProtocal = function (loc) {
+    // Protocol may or may not contain a colon
+    var protocol = loc.protocol;
+    if (protocol.slice(-1) !== ":") {
+        protocol += ":";
+    }
+    return protocol;
+};
+exports.getPath = function (loc) {
+    var _loc = window.location;
+    var protocol = exports.getProtocal(_loc);
+    return protocol + "//" + _loc.host + loc.pathname;
+};
 var ReactTracker = /** @class */ (function () {
     function ReactTracker(setupOptions) {
         var _this = this;
         this.protocol = "";
-        this.initProtocal = function () {
-            var loc = window.location;
-            // Protocol may or may not contain a colon
-            var protocol = loc.protocol;
-            if (protocol.slice(-1) !== ":") {
-                protocol += ":";
-            }
-            _this.protocol = protocol;
-        };
-        this.getPath = function (loc) {
-            var _loc = window.location;
-            return _this.protocol + "//" + _loc.host + loc.pathname;
+        this.setProtocal = function () {
+            _this.protocol = exports.getProtocal(window.location);
         };
         var options = __assign(__assign({}, defaultOptions), setupOptions);
         var host = options.host, urlServeJsFile = options.urlServeJsFile;
@@ -71,14 +79,14 @@ var ReactTracker = /** @class */ (function () {
             window.track("init", options.appId);
         }
         window.track("enableUnloadPageView");
-        this.initProtocal();
+        this.setProtocal();
     }
     ReactTracker.prototype.connectToHistory = function (history) {
         var _this = this;
         var prevLoc = typeof history.getCurrentLocation === "undefined"
             ? history.location
             : history.getCurrentLocation();
-        this.previousPath = this.getPath(prevLoc);
+        this.previousPath = exports.getPath(prevLoc);
         window.track("setReferrerUrl", this.previousPath);
         window.track("trackLoadPageView");
         this.unlistenFromHistory = history.listen(function (loc) {
@@ -97,7 +105,7 @@ var ReactTracker = /** @class */ (function () {
         if (typeof window === "undefined") {
             return;
         }
-        var currentPath = this.getPath(loc);
+        var currentPath = exports.getPath(loc);
         if (this.previousPath === currentPath) {
             return;
         }
@@ -110,4 +118,22 @@ var ReactTracker = /** @class */ (function () {
     };
     return ReactTracker;
 }());
+exports.useAutoPageView = function (props) {
+    var _a = react_1.useContext(TrackerContext_1["default"]), callTrackLoadPage = _a.callTrackLoadPage, callTrackUnLoadPage = _a.callTrackUnLoadPage;
+    react_1.useEffect(function () {
+        callTrackLoadPage(props);
+        return function () {
+            callTrackUnLoadPage(props);
+        };
+    }, []);
+};
+exports.useTrackPageView = function () {
+    var _a = react_1.useContext(TrackerContext_1["default"]), callTrackLoadPage = _a.callTrackLoadPage, callTrackUnLoadPage = _a.callTrackUnLoadPage;
+    return {
+        callTrackLoadPage: callTrackLoadPage,
+        callTrackUnLoadPage: callTrackUnLoadPage
+    };
+};
+__export(require("./TrackerContext"));
+__export(require("./TrackerProvider"));
 exports["default"] = ReactTracker;

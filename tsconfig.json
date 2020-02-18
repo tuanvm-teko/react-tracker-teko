@@ -3,11 +3,12 @@
     "resolveJsonModule": true,
     "noEmit": true,
     "outDir": "dist",
+    "jsx": "react",
     "target": "es5",
     "lib": ["es5", "es6", "es7", "es2017", "dom"],
-    "jsx": "preserve",
     "moduleResolution": "node",
     "rootDirs": ["src"],
+    "esModuleInterop": false,
     "allowSyntheticDefaultImports": true
   },
   "include": ["src/*"],
