@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -10,8 +9,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-exports.__esModule = true;
-var common_1 = require("./common");
+import { getPath } from "./common";
 var defaultOptions = {
     host: "https://dev-tracking.teko.vn",
     urlServeJsFile: "https://dev-tracking.teko.vn/track/libs/tracker-v1.0.0.full.min.js"
@@ -51,7 +49,7 @@ var init = function (f, b, e, v, i, r, t, s) {
 };
 var ReactTracker = /** @class */ (function () {
     function ReactTracker(setupOptions) {
-        var options = __assign(__assign({}, defaultOptions), setupOptions);
+        var options = __assign({}, defaultOptions, setupOptions);
         var host = options.host, urlServeJsFile = options.urlServeJsFile;
         init(window, document, "script", urlServeJsFile, "track", host);
         if (options.appId) {
@@ -64,7 +62,7 @@ var ReactTracker = /** @class */ (function () {
         var prevLoc = typeof history.getCurrentLocation === "undefined"
             ? history.location
             : history.getCurrentLocation();
-        this.previousPath = common_1.getPath(prevLoc);
+        this.previousPath = getPath(prevLoc);
         window.track("setReferrerUrl", this.previousPath);
         window.track("trackLoadPageView");
         this.unlistenFromHistory = history.listen(function (loc) {
@@ -83,7 +81,7 @@ var ReactTracker = /** @class */ (function () {
         if (typeof window === "undefined") {
             return;
         }
-        var currentPath = common_1.getPath(loc);
+        var currentPath = getPath(loc);
         if (this.previousPath === currentPath) {
             return;
         }
@@ -96,4 +94,5 @@ var ReactTracker = /** @class */ (function () {
     };
     return ReactTracker;
 }());
-exports["default"] = ReactTracker;
+export default ReactTracker;
+//# sourceMappingURL=index.js.map

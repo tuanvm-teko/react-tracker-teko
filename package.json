@@ -11,7 +11,8 @@
     "tracker"
   ],
   "scripts": {
-    "compile": "rm -rf dist && tsc src/* --outDir dist -d --declarationDir dist --jsx preserve"
+    "compile": "rm -rf dist && tsc src/* --outDir dist -d --declarationDir dist --jsx react",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/history": "^4.7.5",
