@@ -1,7 +1,8 @@
-import * as React from "react";
-export var TrackerContext = React.createContext({
+"use strict";
+exports.__esModule = true;
+var React = require("react");
+exports.TrackerContext = React.createContext({
     callTrackLoadPage: function () { },
     callTrackUnLoadPage: function () { }
 });
-export default TrackerContext;
-//# sourceMappingURL=TrackerContext.jsx.map
+exports["default"] = exports.TrackerContext;

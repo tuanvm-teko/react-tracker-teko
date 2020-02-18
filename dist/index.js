@@ -1,3 +1,4 @@
+"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -9,8 +10,8 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-import { useContext, useEffect } from "react";
-import TrackerContext from "./TrackerContext";
+exports.__esModule = true;
+var common_1 = require("./common");
 var defaultOptions = {
     host: "https://dev-tracking.teko.vn",
     urlServeJsFile: "https://dev-tracking.teko.vn/track/libs/tracker-v1.0.0.full.min.js"
@@ -48,22 +49,9 @@ var init = function (f, b, e, v, i, r, t, s) {
         return false;
     };
 };
-export var getProtocal = function (loc) {
-    // Protocol may or may not contain a colon
-    var protocol = loc.protocol;
-    if (protocol.slice(-1) !== ":") {
-        protocol += ":";
-    }
-    return protocol;
-};
-export var getPath = function (loc) {
-    var _loc = window.location;
-    var protocol = getProtocal(_loc);
-    return protocol + "//" + _loc.host + loc.pathname;
-};
 var ReactTracker = /** @class */ (function () {
     function ReactTracker(setupOptions) {
-        var options = __assign({}, defaultOptions, setupOptions);
+        var options = __assign(__assign({}, defaultOptions), setupOptions);
         var host = options.host, urlServeJsFile = options.urlServeJsFile;
         init(window, document, "script", urlServeJsFile, "track", host);
         if (options.appId) {
@@ -76,7 +64,7 @@ var ReactTracker = /** @class */ (function () {
         var prevLoc = typeof history.getCurrentLocation === "undefined"
             ? history.location
             : history.getCurrentLocation();
-        this.previousPath = getPath(prevLoc);
+        this.previousPath = common_1.getPath(prevLoc);
         window.track("setReferrerUrl", this.previousPath);
         window.track("trackLoadPageView");
         this.unlistenFromHistory = history.listen(function (loc) {
@@ -95,7 +83,7 @@ var ReactTracker = /** @class */ (function () {
         if (typeof window === "undefined") {
             return;
         }
-        var currentPath = getPath(loc);
+        var currentPath = common_1.getPath(loc);
         if (this.previousPath === currentPath) {
             return;
         }
@@ -108,23 +96,4 @@ var ReactTracker = /** @class */ (function () {
     };
     return ReactTracker;
 }());
-export var useAutoPageView = function (props) {
-    var _a = useContext(TrackerContext), callTrackLoadPage = _a.callTrackLoadPage, callTrackUnLoadPage = _a.callTrackUnLoadPage;
-    useEffect(function () {
-        callTrackLoadPage(props);
-        return function () {
-            callTrackUnLoadPage(props);
-        };
-    }, []);
-};
-export var useTrackPageView = function () {
-    var _a = useContext(TrackerContext), callTrackLoadPage = _a.callTrackLoadPage, callTrackUnLoadPage = _a.callTrackUnLoadPage;
-    return {
-        callTrackLoadPage: callTrackLoadPage,
-        callTrackUnLoadPage: callTrackUnLoadPage
-    };
-};
-export * from "./TrackerContext";
-export * from "./TrackerProvider";
-export default ReactTracker;
-//# sourceMappingURL=index.jsx.map
+exports["default"] = ReactTracker;

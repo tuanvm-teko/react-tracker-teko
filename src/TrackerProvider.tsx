@@ -1,21 +1,15 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import TrackerContext from "./TrackerContext";
-import { getPath, UseTrackPageViewT } from "./index";
-import { History } from "history";
-
-export interface Instance {
-  callTrackLoadPage: (props?: UseTrackPageViewT) => void;
-  callTrackUnLoadPage: (props?: UseTrackPageViewT) => void;
-}
-interface PropsT {
-  children: React.ReactNode;
-  history: History<any>;
-}
+import { getPath } from "./common";
+import { PropsProviderT } from "./types";
 
 let mPrevLoc: any;
 
-export const TrackerProvider: React.FC<PropsT> = ({ children, history }) => {
+export const TrackerProvider: React.FC<PropsProviderT> = ({
+  children,
+  history
+}) => {
   const Context = TrackerContext;
   const [loc, setLoc] = useState(history.location);
   useEffect(() => {
