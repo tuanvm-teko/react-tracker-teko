@@ -119,4 +119,5 @@ class ReactTracker {
   }
 }
 
+export * from "./hooks";
 export default ReactTracker;

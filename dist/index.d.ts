@@ -7,4 +7,5 @@ declare class ReactTracker {
     disconnectFromHistory(): boolean;
     private track;
 }
+export * from "./hooks";
 export default ReactTracker;

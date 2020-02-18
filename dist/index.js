@@ -94,5 +94,6 @@ var ReactTracker = /** @class */ (function () {
     };
     return ReactTracker;
 }());
+export * from "./hooks";
 export default ReactTracker;
 //# sourceMappingURL=index.js.map
