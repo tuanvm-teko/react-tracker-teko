@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -10,12 +9,8 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-exports.__esModule = true;
-var react_1 = require("react");
-var TrackerContext_1 = require("./TrackerContext");
+import { useContext, useEffect } from "react";
+import TrackerContext from "./TrackerContext";
 var defaultOptions = {
     host: "https://dev-tracking.teko.vn",
     urlServeJsFile: "https://dev-tracking.teko.vn/track/libs/tracker-v1.0.0.full.min.js"
@@ -47,12 +42,13 @@ var init = function (f, b, e, v, i, r, t, s) {
     // Insert the Snowplow script before every other script so it executes as soon as possible
     s.parentNode.insertBefore(t, s);
     // add listener error
+    // @ts-ignore
     window.onerror = function (msg, url, lineNo, columnNo, error) {
         f[i]("error", { msg: msg, error: error });
         return false;
     };
 };
-exports.getProtocal = function (loc) {
+export var getProtocal = function (loc) {
     // Protocol may or may not contain a colon
     var protocol = loc.protocol;
     if (protocol.slice(-1) !== ":") {
@@ -60,33 +56,27 @@ exports.getProtocal = function (loc) {
     }
     return protocol;
 };
-exports.getPath = function (loc) {
+export var getPath = function (loc) {
     var _loc = window.location;
-    var protocol = exports.getProtocal(_loc);
+    var protocol = getProtocal(_loc);
     return protocol + "//" + _loc.host + loc.pathname;
 };
 var ReactTracker = /** @class */ (function () {
     function ReactTracker(setupOptions) {
-        var _this = this;
-        this.protocol = "";
-        this.setProtocal = function () {
-            _this.protocol = exports.getProtocal(window.location);
-        };
-        var options = __assign(__assign({}, defaultOptions), setupOptions);
+        var options = __assign({}, defaultOptions, setupOptions);
         var host = options.host, urlServeJsFile = options.urlServeJsFile;
         init(window, document, "script", urlServeJsFile, "track", host);
         if (options.appId) {
             window.track("init", options.appId);
         }
         window.track("enableUnloadPageView");
-        this.setProtocal();
     }
     ReactTracker.prototype.connectToHistory = function (history) {
         var _this = this;
         var prevLoc = typeof history.getCurrentLocation === "undefined"
             ? history.location
             : history.getCurrentLocation();
-        this.previousPath = exports.getPath(prevLoc);
+        this.previousPath = getPath(prevLoc);
         window.track("setReferrerUrl", this.previousPath);
         window.track("trackLoadPageView");
         this.unlistenFromHistory = history.listen(function (loc) {
@@ -105,7 +95,7 @@ var ReactTracker = /** @class */ (function () {
         if (typeof window === "undefined") {
             return;
         }
-        var currentPath = exports.getPath(loc);
+        var currentPath = getPath(loc);
         if (this.previousPath === currentPath) {
             return;
         }
@@ -118,22 +108,23 @@ var ReactTracker = /** @class */ (function () {
     };
     return ReactTracker;
 }());
-exports.useAutoPageView = function (props) {
-    var _a = react_1.useContext(TrackerContext_1["default"]), callTrackLoadPage = _a.callTrackLoadPage, callTrackUnLoadPage = _a.callTrackUnLoadPage;
-    react_1.useEffect(function () {
+export var useAutoPageView = function (props) {
+    var _a = useContext(TrackerContext), callTrackLoadPage = _a.callTrackLoadPage, callTrackUnLoadPage = _a.callTrackUnLoadPage;
+    useEffect(function () {
         callTrackLoadPage(props);
         return function () {
             callTrackUnLoadPage(props);
         };
     }, []);
 };
-exports.useTrackPageView = function () {
-    var _a = react_1.useContext(TrackerContext_1["default"]), callTrackLoadPage = _a.callTrackLoadPage, callTrackUnLoadPage = _a.callTrackUnLoadPage;
+export var useTrackPageView = function () {
+    var _a = useContext(TrackerContext), callTrackLoadPage = _a.callTrackLoadPage, callTrackUnLoadPage = _a.callTrackUnLoadPage;
     return {
         callTrackLoadPage: callTrackLoadPage,
         callTrackUnLoadPage: callTrackUnLoadPage
     };
 };
-__export(require("./TrackerContext"));
-__export(require("./TrackerProvider"));
-exports["default"] = ReactTracker;
+export * from "./TrackerContext";
+export * from "./TrackerProvider";
+export default ReactTracker;
+//# sourceMappingURL=index.jsx.map

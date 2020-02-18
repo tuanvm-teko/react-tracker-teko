@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useContext, useEffect } from "react";
 import TrackerContext from "./TrackerContext";
 import { Instance } from "./TrackerProvider";
@@ -54,6 +53,7 @@ const init = (
   s.parentNode.insertBefore(t, s);
 
   // add listener error
+  // @ts-ignore
   window.onerror = (msg, url, lineNo, columnNo, error) => {
     f[i]("error", { msg, error });
     return false;
@@ -85,7 +85,6 @@ export const getPath = (loc: any) => {
 class ReactTracker {
   private previousPath: any;
   private unlistenFromHistory: any;
-  private protocol: string = "";
 
   constructor(setupOptions: InitContructor) {
     const options = { ...defaultOptions, ...setupOptions };
@@ -96,7 +95,6 @@ class ReactTracker {
     }
 
     (window as any).track("enableUnloadPageView");
-    this.setProtocal();
   }
 
   public connectToHistory(history: any) {
@@ -142,10 +140,6 @@ class ReactTracker {
 
     this.previousPath = currentPath;
   }
-
-  private setProtocal = () => {
-    this.protocol = getProtocal(window.location);
-  };
 }
 
 export interface UseTrackPageViewT {
