@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import TrackerContext from "./TrackerContext";
-import { getPath } from "./common";
+import { getPath, getPropsPageView } from "./common";
 var mPrevLoc;
 export var TrackerProvider = function (_a) {
     var children = _a.children, history = _a.history;
@@ -20,13 +20,13 @@ export var TrackerProvider = function (_a) {
         var currentPath = getPath(loc);
         window.track("setReferrerUrl", previousPath);
         window.track("setCurrentUrl", currentPath);
-        window.track("trackLoadPageView", props);
+        window.track("trackLoadPageView", getPropsPageView(currentPath, props));
         mPrevLoc = loc;
     };
     var callTrackUnLoadPage = function (props) {
         var previousPath = getPath(mPrevLoc || loc);
         window.track("setCurrentUrl", previousPath);
-        window.track("trackUnLoadPageView", props);
+        window.track("trackUnLoadPageView", getPropsPageView(previousPath, props));
     };
     return (React.createElement(Context.Provider, { value: { callTrackLoadPage: callTrackLoadPage, callTrackUnLoadPage: callTrackUnLoadPage } }, children));
 };
