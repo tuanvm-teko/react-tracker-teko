@@ -49,7 +49,7 @@ var init = function (f, b, e, v, i, r, t, s) {
 };
 var ReactTracker = /** @class */ (function () {
     function ReactTracker(setupOptions) {
-        var options = __assign({}, defaultOptions, setupOptions);
+        var options = __assign(__assign({}, defaultOptions), setupOptions);
         var host = options.host, urlServeJsFile = options.urlServeJsFile;
         init(window, document, "script", urlServeJsFile, "track", host);
         if (options.appId) {

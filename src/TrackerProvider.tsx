@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import TrackerContext from "./TrackerContext";
 import { getPath } from "./common";
-import { PropsProviderT } from "./types";
+import { PropsProviderT, UseTrackPageViewT } from "./types";
 
 let mPrevLoc: any;
 
@@ -22,20 +22,20 @@ export const TrackerProvider: React.FC<PropsProviderT> = ({
     };
   });
 
-  const callTrackLoadPage = () => {
+  const callTrackLoadPage = (props?: UseTrackPageViewT) => {
     const previousPath = getPath(mPrevLoc || loc);
     const currentPath = getPath(loc);
 
     (window as any).track("setReferrerUrl", previousPath);
     (window as any).track("setCurrentUrl", currentPath);
-    (window as any).track("trackLoadPageView");
+    (window as any).track("trackLoadPageView", props);
     mPrevLoc = loc;
   };
 
-  const callTrackUnLoadPage = () => {
+  const callTrackUnLoadPage = (props?: UseTrackPageViewT) => {
     const previousPath = getPath(mPrevLoc || loc);
     (window as any).track("setCurrentUrl", previousPath);
-    (window as any).track("trackUnLoadPageView");
+    (window as any).track("trackUnLoadPageView", props);
   };
 
   return (

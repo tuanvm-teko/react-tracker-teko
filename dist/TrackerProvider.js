@@ -15,18 +15,18 @@ export var TrackerProvider = function (_a) {
             unregister();
         };
     });
-    var callTrackLoadPage = function () {
+    var callTrackLoadPage = function (props) {
         var previousPath = getPath(mPrevLoc || loc);
         var currentPath = getPath(loc);
         window.track("setReferrerUrl", previousPath);
         window.track("setCurrentUrl", currentPath);
-        window.track("trackLoadPageView");
+        window.track("trackLoadPageView", props);
         mPrevLoc = loc;
     };
-    var callTrackUnLoadPage = function () {
+    var callTrackUnLoadPage = function (props) {
         var previousPath = getPath(mPrevLoc || loc);
         window.track("setCurrentUrl", previousPath);
-        window.track("trackUnLoadPageView");
+        window.track("trackUnLoadPageView", props);
     };
     return (React.createElement(Context.Provider, { value: { callTrackLoadPage: callTrackLoadPage, callTrackUnLoadPage: callTrackUnLoadPage } }, children));
 };
