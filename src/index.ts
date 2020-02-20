@@ -2,8 +2,7 @@ import { InitContructor } from "./types";
 import { getPath } from "./common";
 const defaultOptions = {
   host: "https://dev-tracking.teko.vn",
-  urlServeJsFile:
-    "https://dev-tracking.teko.vn/track/libs/tracker-v1.0.0.full.min.js"
+  urlServeJsFile: "https://dev-tracking.teko.vn/track/libs/tracker.full.min.js"
 };
 
 const init = (
@@ -62,6 +61,7 @@ const init = (
 class ReactTracker {
   private previousPath: any;
   private unlistenFromHistory: any;
+  private history: any;
 
   constructor(setupOptions: InitContructor) {
     const options = { ...defaultOptions, ...setupOptions };
@@ -75,16 +75,12 @@ class ReactTracker {
   }
 
   public connectToHistory(history: any) {
-    const prevLoc =
-      typeof history.getCurrentLocation === "undefined"
-        ? history.location
-        : history.getCurrentLocation();
-    this.previousPath = getPath(prevLoc);
-    (window as any).track("setReferrerUrl", this.previousPath);
-    (window as any).track("trackLoadPageView");
-    this.unlistenFromHistory = history.listen((loc: any) => {
-      this.track(loc);
-    });
+    if (this.history) {
+      return history;
+    }
+
+    this.history = history;
+    this.registerListener(history);
 
     return history;
   }
@@ -98,6 +94,19 @@ class ReactTracker {
 
     return false;
   }
+
+  private registerListener = (history: any) => {
+    const prevLoc =
+      typeof history.getCurrentLocation === "undefined"
+        ? history.location
+        : history.getCurrentLocation();
+    this.previousPath = getPath(prevLoc);
+    (window as any).track("setReferrerUrl", this.previousPath);
+    (window as any).track("trackLoadPageView");
+    this.unlistenFromHistory = history.listen((loc: any) => {
+      this.track(loc);
+    });
+  };
 
   private track(loc: any) {
     if (typeof window === "undefined") {

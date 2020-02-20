@@ -12,7 +12,7 @@ var __assign = (this && this.__assign) || function () {
 import { getPath } from "./common";
 var defaultOptions = {
     host: "https://dev-tracking.teko.vn",
-    urlServeJsFile: "https://dev-tracking.teko.vn/track/libs/tracker-v1.0.0.full.min.js"
+    urlServeJsFile: "https://dev-tracking.teko.vn/track/libs/tracker.full.min.js"
 };
 var init = function (f, b, e, v, i, r, t, s) {
     // Stop if tracker already exists
@@ -49,6 +49,18 @@ var init = function (f, b, e, v, i, r, t, s) {
 };
 var ReactTracker = /** @class */ (function () {
     function ReactTracker(setupOptions) {
+        var _this = this;
+        this.registerListener = function (history) {
+            var prevLoc = typeof history.getCurrentLocation === "undefined"
+                ? history.location
+                : history.getCurrentLocation();
+            _this.previousPath = getPath(prevLoc);
+            window.track("setReferrerUrl", _this.previousPath);
+            window.track("trackLoadPageView");
+            _this.unlistenFromHistory = history.listen(function (loc) {
+                _this.track(loc);
+            });
+        };
         var options = __assign(__assign({}, defaultOptions), setupOptions);
         var host = options.host, urlServeJsFile = options.urlServeJsFile;
         init(window, document, "script", urlServeJsFile, "track", host);
@@ -58,16 +70,11 @@ var ReactTracker = /** @class */ (function () {
         window.track("enableUnloadPageView");
     }
     ReactTracker.prototype.connectToHistory = function (history) {
-        var _this = this;
-        var prevLoc = typeof history.getCurrentLocation === "undefined"
-            ? history.location
-            : history.getCurrentLocation();
-        this.previousPath = getPath(prevLoc);
-        window.track("setReferrerUrl", this.previousPath);
-        window.track("trackLoadPageView");
-        this.unlistenFromHistory = history.listen(function (loc) {
-            _this.track(loc);
-        });
+        if (this.history) {
+            return history;
+        }
+        this.history = history;
+        this.registerListener(history);
         return history;
     };
     ReactTracker.prototype.disconnectFromHistory = function () {

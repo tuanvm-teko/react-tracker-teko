@@ -22,6 +22,16 @@ const reactTracker = new ReactTracker({
   appId: "chat-tool"
 });
 
+// BAD if app use IAM
+const newHistory = reactTracker.connectToHistory(history);
+ReactDOM.render(
+  <Provider store={store}>
+    <Router routes={routes} history={newHistory} />
+  </Provider>,
+  document.getElementById("root")
+);
+
+// GOOD if app use IAM
 ReactDOM.render(
   <Provider store={store}>
     <Router routes={routes} history={reactTracker.connectToHistory(history)} />
