@@ -70,14 +70,13 @@ class ReactTracker {
     if (options.appId) {
       (window as any).track("init", options.appId);
     }
-
-    (window as any).track("enableUnloadPageView");
   }
 
   public connectToHistory(history: any) {
     if (this.history) {
       return history;
     }
+    (window as any).track("enableUnloadPageView");
 
     this.history = history;
     this.registerListener(history);

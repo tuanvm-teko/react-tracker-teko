@@ -67,12 +67,12 @@ var ReactTracker = /** @class */ (function () {
         if (options.appId) {
             window.track("init", options.appId);
         }
-        window.track("enableUnloadPageView");
     }
     ReactTracker.prototype.connectToHistory = function (history) {
         if (this.history) {
             return history;
         }
+        window.track("enableUnloadPageView");
         this.history = history;
         this.registerListener(history);
         return history;
