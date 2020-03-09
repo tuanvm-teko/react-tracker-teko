@@ -12,6 +12,7 @@ export interface InitContructor {
 
 export interface UseTrackPageViewT {
   pageCode?: string;
+  sku?: string;
 }
 
 export interface Instance {

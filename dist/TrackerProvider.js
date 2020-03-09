@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import TrackerContext from "./TrackerContext";
-import { getPath, getPropsPageView } from "./common";
+import { getPropsPageView, getFullPath } from "./common";
 var mPrevLoc;
 export var TrackerProvider = function (_a) {
     var children = _a.children, history = _a.history;
@@ -16,17 +16,17 @@ export var TrackerProvider = function (_a) {
         };
     });
     var callTrackLoadPage = function (props) {
-        var previousPath = getPath(mPrevLoc || loc);
-        var currentPath = getPath(loc);
-        window.track("setReferrerUrl", previousPath);
-        window.track("setCurrentUrl", currentPath);
-        window.track("trackLoadPageView", getPropsPageView(currentPath, props));
+        var previousFullPath = getFullPath(mPrevLoc || loc);
+        var currentFullPath = getFullPath(loc);
+        window.track("setReferrerUrl", previousFullPath);
+        window.track("setCurrentUrl", currentFullPath);
+        window.track("trackLoadPageView", getPropsPageView(currentFullPath, props));
         mPrevLoc = loc;
     };
     var callTrackUnLoadPage = function (props) {
-        var previousPath = getPath(mPrevLoc || loc);
-        window.track("setCurrentUrl", previousPath);
-        window.track("trackUnLoadPageView", getPropsPageView(previousPath, props));
+        var previousFullPath = getFullPath(mPrevLoc || loc);
+        window.track("setCurrentUrl", previousFullPath);
+        window.track("trackUnLoadPageView", getPropsPageView(previousFullPath, props));
     };
     return (React.createElement(Context.Provider, { value: { callTrackLoadPage: callTrackLoadPage, callTrackUnLoadPage: callTrackUnLoadPage } }, children));
 };

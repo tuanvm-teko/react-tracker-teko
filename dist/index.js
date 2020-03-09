@@ -9,7 +9,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-import { getPath } from "./common";
+import { getPath, getFullPath } from "./common";
 var defaultOptions = {
     host: "https://dev-tracking.teko.vn",
     urlServeJsFile: "https://dev-tracking.teko.vn/track/libs/tracker.full.min.js"
@@ -55,7 +55,8 @@ var ReactTracker = /** @class */ (function () {
                 ? history.location
                 : history.getCurrentLocation();
             _this.previousPath = getPath(prevLoc);
-            window.track("setReferrerUrl", _this.previousPath);
+            _this.previousFullPath = getFullPath(prevLoc);
+            window.track("setReferrerUrl", _this.previousFullPath);
             window.track("trackLoadPageView");
             _this.unlistenFromHistory = history.listen(function (loc) {
                 _this.track(loc);
@@ -89,13 +90,14 @@ var ReactTracker = /** @class */ (function () {
             return;
         }
         var currentPath = getPath(loc);
+        var currentFullPath = getFullPath(loc);
         if (this.previousPath === currentPath) {
             return;
         }
-        window.track("setCurrentUrl", this.previousPath);
+        window.track("setCurrentUrl", this.previousFullPath);
         window.track("trackUnLoadPageView");
-        window.track("setReferrerUrl", this.previousPath);
-        window.track("setCurrentUrl", currentPath);
+        window.track("setReferrerUrl", this.previousFullPath);
+        window.track("setCurrentUrl", currentFullPath);
         window.track("trackLoadPageView");
         this.previousPath = currentPath;
     };

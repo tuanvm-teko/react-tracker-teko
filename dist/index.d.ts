@@ -1,6 +1,7 @@
 import { InitContructor } from "./types";
 declare class ReactTracker {
     private previousPath;
+    private previousFullPath;
     private unlistenFromHistory;
     private history;
     constructor(setupOptions: InitContructor);

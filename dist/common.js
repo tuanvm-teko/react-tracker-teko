@@ -22,6 +22,10 @@ export var getPath = function (loc) {
     var protocol = getProtocal(_loc);
     return protocol + "//" + _loc.host + loc.pathname;
 };
+export var getFullPath = function (loc) {
+    var windowLoc = window.location;
+    return getProtocal(windowLoc) + "//" + windowLoc.host + loc.pathname + loc.search + loc.hash;
+};
 export var getPropsPageView = function (path, props) { return (__assign({}, (!props
     ? { pageCode: path }
     : __assign(__assign({}, props), (!props.pageCode ? { pageCode: path } : {}))))); };
