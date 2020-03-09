@@ -1,5 +1,5 @@
 import { InitContructor } from "./types";
-import { getPath } from "./common";
+import { getPath, getFullPath } from "./common";
 const defaultOptions = {
   host: "https://dev-tracking.teko.vn",
   urlServeJsFile: "https://dev-tracking.teko.vn/track/libs/tracker.full.min.js"
@@ -60,6 +60,7 @@ const init = (
 
 class ReactTracker {
   private previousPath: any;
+  private previousFullPath: any;
   private unlistenFromHistory: any;
   private history: any;
 
@@ -100,7 +101,8 @@ class ReactTracker {
         ? history.location
         : history.getCurrentLocation();
     this.previousPath = getPath(prevLoc);
-    (window as any).track("setReferrerUrl", this.previousPath);
+    this.previousFullPath = getFullPath(prevLoc);
+    (window as any).track("setReferrerUrl", this.previousFullPath);
     (window as any).track("trackLoadPageView");
     this.unlistenFromHistory = history.listen((loc: any) => {
       this.track(loc);
@@ -112,15 +114,16 @@ class ReactTracker {
       return;
     }
     const currentPath = getPath(loc);
+    const currentFullPath = getFullPath(loc);
 
     if (this.previousPath === currentPath) {
       return;
     }
-    (window as any).track("setCurrentUrl", this.previousPath);
+    (window as any).track("setCurrentUrl", this.previousFullPath);
     (window as any).track("trackUnLoadPageView");
 
-    (window as any).track("setReferrerUrl", this.previousPath);
-    (window as any).track("setCurrentUrl", currentPath);
+    (window as any).track("setReferrerUrl", this.previousFullPath);
+    (window as any).track("setCurrentUrl", currentFullPath);
     (window as any).track("trackLoadPageView");
 
     this.previousPath = currentPath;

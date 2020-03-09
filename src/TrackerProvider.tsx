@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import TrackerContext from "./TrackerContext";
-import { getPath, getPropsPageView } from "./common";
+import { getPropsPageView, getFullPath } from "./common";
 import { PropsProviderT, UseTrackPageViewT } from "./types";
 
 let mPrevLoc: any;
@@ -23,24 +23,24 @@ export const TrackerProvider: React.FC<PropsProviderT> = ({
   });
 
   const callTrackLoadPage = (props?: UseTrackPageViewT) => {
-    const previousPath = getPath(mPrevLoc || loc);
-    const currentPath = getPath(loc);
+    const previousFullPath = getFullPath(mPrevLoc || loc);
+    const currentFullPath = getFullPath(loc);
 
-    (window as any).track("setReferrerUrl", previousPath);
-    (window as any).track("setCurrentUrl", currentPath);
+    (window as any).track("setReferrerUrl", previousFullPath);
+    (window as any).track("setCurrentUrl", currentFullPath);
     (window as any).track(
       "trackLoadPageView",
-      getPropsPageView(currentPath, props)
+      getPropsPageView(currentFullPath, props)
     );
     mPrevLoc = loc;
   };
 
   const callTrackUnLoadPage = (props?: UseTrackPageViewT) => {
-    const previousPath = getPath(mPrevLoc || loc);
-    (window as any).track("setCurrentUrl", previousPath);
+    const previousFullPath = getFullPath(mPrevLoc || loc);
+    (window as any).track("setCurrentUrl", previousFullPath);
     (window as any).track(
       "trackUnLoadPageView",
-      getPropsPageView(previousPath, props)
+      getPropsPageView(previousFullPath, props)
     );
   };
 
