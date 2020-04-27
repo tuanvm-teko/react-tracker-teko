@@ -12,7 +12,7 @@ var __assign = (this && this.__assign) || function () {
 import { getPath, getFullPath } from "./common";
 var defaultOptions = {
     host: "https://dev-tracking.teko.vn",
-    urlServeJsFile: "https://dev-tracking.teko.vn/track/libs/tracker.full.min.js"
+    urlServeJsFile: "https://dev-tracking.teko.vn/track/libs/tracker.full.min.js",
 };
 var init = function (f, b, e, v, i, r, t, s) {
     // Stop if tracker already exists
@@ -43,7 +43,7 @@ var init = function (f, b, e, v, i, r, t, s) {
     // add listener error
     // @ts-ignore
     window.onerror = function (msg, url, lineNo, columnNo, error) {
-        f[i]("error", { msg: msg, error: error });
+        f[i]("exception", { msg: msg, error: error });
         return false;
     };
 };

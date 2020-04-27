@@ -13,7 +13,7 @@ export var useTrackPageView = function () {
     var _a = useContext(TrackerContext), callTrackLoadPage = _a.callTrackLoadPage, callTrackUnLoadPage = _a.callTrackUnLoadPage;
     return {
         callTrackLoadPage: callTrackLoadPage,
-        callTrackUnLoadPage: callTrackUnLoadPage
+        callTrackUnLoadPage: callTrackUnLoadPage,
     };
 };
 export * from "./TrackerContext";

@@ -26,7 +26,5 @@ export var getFullPath = function (loc) {
     var windowLoc = window.location;
     return getProtocal(windowLoc) + "//" + windowLoc.host + loc.pathname + loc.search + loc.hash;
 };
-export var getPropsPageView = function (path, props) { return (__assign({}, (!props
-    ? { pageCode: path }
-    : __assign(__assign({}, props), (!props.pageCode ? { pageCode: path } : {}))))); };
+export var getPropsPageView = function (props) { return (__assign({}, props)); };
 //# sourceMappingURL=common.js.map

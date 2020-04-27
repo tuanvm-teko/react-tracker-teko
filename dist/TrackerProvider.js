@@ -20,13 +20,13 @@ export var TrackerProvider = function (_a) {
         var currentFullPath = getFullPath(loc);
         window.track("setReferrerUrl", previousFullPath);
         window.track("setCurrentUrl", currentFullPath);
-        window.track("trackLoadPageView", getPropsPageView(currentFullPath, props));
+        window.track("trackLoadPageView", getPropsPageView(props));
         mPrevLoc = loc;
     };
     var callTrackUnLoadPage = function (props) {
         var previousFullPath = getFullPath(mPrevLoc || loc);
         window.track("setCurrentUrl", previousFullPath);
-        window.track("trackUnLoadPageView", getPropsPageView(previousFullPath, props));
+        window.track("trackUnLoadPageView", getPropsPageView(props));
     };
     return (React.createElement(Context.Provider, { value: { callTrackLoadPage: callTrackLoadPage, callTrackUnLoadPage: callTrackUnLoadPage } }, children));
 };

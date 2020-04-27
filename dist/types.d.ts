@@ -10,10 +10,12 @@ export interface InitContructor {
     urlServeJsFile: string;
 }
 export interface UseTrackPageViewT {
-    pageCode?: string;
-    sku?: string;
+    contentType?: string;
+    skuId?: string;
+    skuName?: string;
+    screenName?: string;
 }
 export interface Instance {
-    callTrackLoadPage: (props?: UseTrackPageViewT) => void;
-    callTrackUnLoadPage: (props?: UseTrackPageViewT) => void;
+    callTrackLoadPage: (props: UseTrackPageViewT) => void;
+    callTrackUnLoadPage: (props: UseTrackPageViewT) => void;
 }

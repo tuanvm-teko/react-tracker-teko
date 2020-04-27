@@ -24,8 +24,6 @@ export const getFullPath = (loc: Location) => {
   }${loc.hash}`;
 };
 
-export const getPropsPageView = (path: string, props?: UseTrackPageViewT) => ({
-  ...(!props
-    ? { pageCode: path }
-    : { ...props, ...(!props.pageCode ? { pageCode: path } : {}) })
+export const getPropsPageView = (props: UseTrackPageViewT) => ({
+  ...props,
 });

@@ -2,7 +2,7 @@ import TrackerContext from "./TrackerContext";
 import { UseTrackPageViewT, Instance } from "./types";
 import { useContext, useEffect } from "react";
 
-export const useAutoPageView = (props?: UseTrackPageViewT) => {
+export const useAutoPageView = (props: UseTrackPageViewT) => {
   const { callTrackLoadPage, callTrackUnLoadPage }: Instance = useContext(
     TrackerContext
   );
@@ -21,7 +21,7 @@ export const useTrackPageView = () => {
 
   return {
     callTrackLoadPage,
-    callTrackUnLoadPage
+    callTrackUnLoadPage,
   };
 };
 export * from "./TrackerContext";

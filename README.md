@@ -19,7 +19,7 @@ const reactTracker = new ReactTracker({
   // Configure your tracker server and site by providing
   host: "https://dev-tracking.teko.vn",
   urlServeJsFile: "https://dev-tracking.teko.vn/track/libs/tracker.full.min.js",
-  appId: "chat-tool"
+  appId: "chat-tool",
 });
 
 // BAD if app use IAM
@@ -45,19 +45,20 @@ ReactDOM.render(
 ```js
 import ReactTracker, {
   TrackerProvider,
-  useAutoPageView
+  useAutoPageView,
 } from "react-tracker-teko";
 
 const reactTracker = new ReactTracker({
   // Configure your tracker server and site by providing
   host: "https://dev-tracking.teko.vn",
   urlServeJsFile: "https://dev-tracking.teko.vn/track/libs/tracker.full.min.js",
-  appId: "chat-tool"
+  appId: "chat-tool",
 });
 
 // Auto detect pageView
 const ScreenA = (props) => {
-  useAutoPageView({ pageCode: "ScreenA" });
+  track("setUserId", "random-user-id");
+  useAutoPageView({ screenName: "ScreenA" });
   return <>ScreenA</>;
 };
 
@@ -66,11 +67,12 @@ const ScreenB = (props) => {
   const { callTrackLoadPage, callTrackUnLoadPage } = useTrackPageView();
 
   useEffect(() => {
+    track("setUserId", "random-user-id");
     // some logic ....
-    callTrackLoadPage({ pageCode: "ScreenB" });
+    callTrackLoadPage({ screenName: "ScreenB" });
     return () => {
       // some logic ....
-      callTrackUnLoadPage({ pageCode: "ScreenB" });
+      callTrackUnLoadPage({ screenName: "ScreenB" });
     };
   });
   return <>ScreenA</>;

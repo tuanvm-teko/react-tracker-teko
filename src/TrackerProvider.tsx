@@ -8,7 +8,7 @@ let mPrevLoc: any;
 
 export const TrackerProvider: React.FC<PropsProviderT> = ({
   children,
-  history
+  history,
 }) => {
   const Context = TrackerContext;
   const [loc, setLoc] = useState(history.location);
@@ -22,26 +22,20 @@ export const TrackerProvider: React.FC<PropsProviderT> = ({
     };
   });
 
-  const callTrackLoadPage = (props?: UseTrackPageViewT) => {
+  const callTrackLoadPage = (props: UseTrackPageViewT) => {
     const previousFullPath = getFullPath(mPrevLoc || loc);
     const currentFullPath = getFullPath(loc);
 
     (window as any).track("setReferrerUrl", previousFullPath);
     (window as any).track("setCurrentUrl", currentFullPath);
-    (window as any).track(
-      "trackLoadPageView",
-      getPropsPageView(currentFullPath, props)
-    );
+    (window as any).track("trackLoadPageView", getPropsPageView(props));
     mPrevLoc = loc;
   };
 
-  const callTrackUnLoadPage = (props?: UseTrackPageViewT) => {
+  const callTrackUnLoadPage = (props: UseTrackPageViewT) => {
     const previousFullPath = getFullPath(mPrevLoc || loc);
     (window as any).track("setCurrentUrl", previousFullPath);
-    (window as any).track(
-      "trackUnLoadPageView",
-      getPropsPageView(previousFullPath, props)
-    );
+    (window as any).track("trackUnLoadPageView", getPropsPageView(props));
   };
 
   return (

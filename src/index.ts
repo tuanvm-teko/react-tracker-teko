@@ -2,7 +2,7 @@ import { InitContructor } from "./types";
 import { getPath, getFullPath } from "./common";
 const defaultOptions = {
   host: "https://dev-tracking.teko.vn",
-  urlServeJsFile: "https://dev-tracking.teko.vn/track/libs/tracker.full.min.js"
+  urlServeJsFile: "https://dev-tracking.teko.vn/track/libs/tracker.full.min.js",
 };
 
 const init = (
@@ -28,7 +28,7 @@ const init = (
   f["GlobalTrackerNamespace"].push(r);
 
   // Create the Snowplow function
-  f[i] = function() {
+  f[i] = function () {
     (f[i].q = f[i].q || []).push(arguments);
   };
 
@@ -53,7 +53,7 @@ const init = (
   // add listener error
   // @ts-ignore
   window.onerror = (msg, url, lineNo, columnNo, error) => {
-    f[i]("error", { msg, error });
+    f[i]("exception", { msg, error });
     return false;
   };
 };
